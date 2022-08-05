@@ -1,0 +1,35 @@
+services:
+  ansible:
+    build: ansible\
+    command: tail -F anything
+  app_server: 
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: openssh-server
+    hostname: app_server #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SUDO_ACCESS=true #optional
+      - PASSWORD_ACCESS=true #optional
+      - USER_PASSWORD=test #optional
+      - USER_NAME=test #optional
+    volumes:
+      - /tmp:/tmp
+    ports:
+      - 2222:2222
+    restart: unless-stopped
+    build: app_server\
+    command: tail -F anything
+    
+  database:
+    build: db_server\
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=homework_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: always
