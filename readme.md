@@ -10,6 +10,12 @@ I interpreted the worst and best stock day as being the highest and the lowest s
 
 To create the plot I used the basic matplotlib.
 
+Inbetween the first and second part I prepared as much as I could before getting to the machine deployment part.
+Due to the need of having sample data, I created a Python script that would generate 1M rows of sample data.
+
+I also prepared a general plan for tasks that I'd need to complete once I had the app_server, db_server and ansible running. I wrote a basic playbook for this along with the SQL scripts that I would need to run.
+These can be found in the /Automation with docker/Second_part.txt file.
+
 Part 2 wasn't as familiar of a subject. Additonal challenges were presented by the fact my local machine is a windows based system.
 
 The main problem seemed to be how to set up the app_server and db_server in a local environment, while still having the possibility to connect to them from Ansible through WSL. Additionally I was considering how to send my work for review. These considerartion led me towards Docker, which in threory seemed to be the best solution.
