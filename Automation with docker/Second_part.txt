@@ -1,0 +1,48 @@
+Automation:
+1. Install database client on "app server"
+-> install python3-psycopg2 on the "app server"
+---
+- name: postgresql demo
+  hosts: all
+  become: true
+  vars:
+    db_name: testdb
+  tasks:
+    - name: Utility present
+      ansible.builtin.package:
+        name: python3-psycopg2
+        state: present
+    - name: run sql
+      community.postgresql.postgresql_query:
+        db: "{{ testdb }}"
+        query: SELECT version()
+      become: true
+      become_user: postgres
+      register: sql_data
+    - name: print
+      ansible.builtin.debug:
+        var: sql_data
+2. create table, generate sample data in database
+
+a) 
+  Replace query with:
+  create table homeowork_data (
+    id INT,
+    date DATE,
+    data VARCHAR(50)
+  );
+
+b) Created a Python script that generates a .csv file with sample data-> load from file to db sample_data.csv
+
+3. execute code to retrieve subset (first 100 rows) of generated data from database thought "app-server" in CVS format
+
+  Use the Playbook to run SQL to get the :
+  SELECT * from testdb LIMIT 100
+
+  Save result to /tmp/gathered_data.csv
+  
+- name: "SQL Script Execution"
+  hosts: Database
+  tasks:
+    - win_command: sqlcmd -S {{ testdb }} -i "D:\\abc\\sdfbv\\Test.sql"
+      register: sqlcmd_out
